@@ -517,6 +517,276 @@
       white-space: nowrap;
     }
 
+    /* ===== LOCATION FINDER ===== */
+    .location-finder {
+      background: linear-gradient(135deg, #EFF6FF 0%, #E0E7FF 50%, #F5F3FF 100%);
+      border: 1.5px solid var(--primary-50);
+      border-radius: var(--radius-xl);
+      padding: 28px 28px 24px;
+      margin: 8px 0 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .location-finder::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .location-finder-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .location-finder-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .location-finder-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .location-finder-header p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    .location-search-row {
+      display: flex;
+      gap: 10px;
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .location-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .location-input-wrap input {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      background: var(--bg-white);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .location-input-wrap input::placeholder { color: var(--text-muted); }
+    .location-input-wrap input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+    }
+
+    .location-input-wrap > i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .location-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-top: 6px;
+      box-shadow: var(--shadow-lg);
+      z-index: 20;
+      max-height: 220px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .location-suggestions.active { display: block; }
+
+    .location-suggestion {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .location-suggestion:hover {
+      background: var(--primary-light);
+    }
+
+    .location-suggestion i {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      width: 18px;
+      text-align: center;
+    }
+
+    .location-suggestion .city-name { font-weight: 600; }
+    .location-suggestion .city-count {
+      margin-left: auto;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: var(--bg-page);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+    }
+
+    .detect-location-btn {
+      padding: 12px 22px;
+      border-radius: var(--radius-full);
+      background: var(--bg-white);
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .detect-location-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .detect-location-btn.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .detect-location-btn.loading i {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .popular-cities {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .city-chip {
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .city-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+
+    .city-chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .city-chip i { font-size: 0.7rem; }
+
+    .location-results-info {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 12px 18px;
+      background: var(--bg-white);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .location-results-info.active { display: flex; }
+
+    .location-results-info i {
+      color: var(--green);
+      font-size: 1.1rem;
+    }
+
+    .location-results-info .results-text {
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .location-results-info .results-text strong {
+      color: var(--primary);
+    }
+
+    .location-results-info .browse-btn {
+      margin-left: auto;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: var(--font);
+    }
+
+    .location-results-info .browse-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+      .location-finder { padding: 20px 18px; }
+      .location-search-row { flex-direction: column; }
+      .detect-location-btn { justify-content: center; }
+      .popular-cities { gap: 6px; }
+    }
+
     /* ===== SECTION HEADERS ===== */
     .section-header {
       display: flex;
@@ -1430,6 +1700,44 @@
           </div>
         </div>
 
+        <!-- LOCATION FINDER -->
+        <div class="location-finder reveal" id="locationFinder">
+          <div class="location-finder-header">
+            <div class="location-finder-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
+            <div>
+              <h3>Find Sponsorships Near You</h3>
+              <p>Discover campus events & sponsorship opportunities in your city</p>
+            </div>
+          </div>
+          <div class="location-search-row">
+            <div class="location-input-wrap">
+              <i class="fa-solid fa-location-dot"></i>
+              <input type="text" id="locationInput" placeholder="Enter your city (e.g. Mumbai, Delhi, Pune...)" autocomplete="off" />
+              <div class="location-suggestions" id="locationSuggestions"></div>
+            </div>
+            <button class="detect-location-btn" id="detectLocationBtn">
+              <i class="fa-solid fa-crosshairs"></i>
+              <span>Detect My Location</span>
+            </button>
+          </div>
+          <div class="popular-cities" id="popularCities">
+            <span style="font-size:0.78rem;color:var(--text-muted);font-weight:600;padding:6px 0;">Popular:</span>
+            <div class="city-chip" data-city="Mumbai"><i class="fa-solid fa-location-dot"></i> Mumbai</div>
+            <div class="city-chip" data-city="Delhi"><i class="fa-solid fa-location-dot"></i> Delhi</div>
+            <div class="city-chip" data-city="Pune"><i class="fa-solid fa-location-dot"></i> Pune</div>
+            <div class="city-chip" data-city="Bangalore"><i class="fa-solid fa-location-dot"></i> Bangalore</div>
+            <div class="city-chip" data-city="Chennai"><i class="fa-solid fa-location-dot"></i> Chennai</div>
+            <div class="city-chip" data-city="Hyderabad"><i class="fa-solid fa-location-dot"></i> Hyderabad</div>
+            <div class="city-chip" data-city="Kolkata"><i class="fa-solid fa-location-dot"></i> Kolkata</div>
+            <div class="city-chip" data-city="Jaipur"><i class="fa-solid fa-location-dot"></i> Jaipur</div>
+          </div>
+          <div class="location-results-info" id="locationResults">
+            <i class="fa-solid fa-circle-check"></i>
+            <span class="results-text" id="resultsText"></span>
+            <button class="browse-btn" id="browseResultsBtn">Browse Events →</button>
+          </div>
+        </div>
+
         <!-- FEATURED SECTION -->
         <div class="section-header reveal">
           <div>
@@ -2040,6 +2348,158 @@
     });
     searchInput.addEventListener('blur', () => {
       searchInput.parentElement.style.maxWidth = '520px';
+    });
+
+    /* ===== LOCATION FINDER ===== */
+    const cityData = [
+      { name: 'Mumbai', state: 'Maharashtra', events: 48, opps: 32 },
+      { name: 'Delhi', state: 'Delhi NCR', events: 62, opps: 45 },
+      { name: 'Pune', state: 'Maharashtra', events: 38, opps: 24 },
+      { name: 'Bangalore', state: 'Karnataka', events: 55, opps: 40 },
+      { name: 'Chennai', state: 'Tamil Nadu', events: 34, opps: 22 },
+      { name: 'Hyderabad', state: 'Telangana', events: 41, opps: 28 },
+      { name: 'Kolkata', state: 'West Bengal', events: 29, opps: 18 },
+      { name: 'Jaipur', state: 'Rajasthan', events: 22, opps: 15 },
+      { name: 'Ahmedabad', state: 'Gujarat', events: 20, opps: 14 },
+      { name: 'Chandigarh', state: 'Punjab', events: 18, opps: 12 },
+      { name: 'Lucknow', state: 'Uttar Pradesh', events: 16, opps: 10 },
+      { name: 'Indore', state: 'Madhya Pradesh', events: 15, opps: 9 },
+      { name: 'Bhopal', state: 'Madhya Pradesh', events: 12, opps: 8 },
+      { name: 'Kochi', state: 'Kerala', events: 14, opps: 11 },
+      { name: 'Nagpur', state: 'Maharashtra', events: 11, opps: 7 },
+      { name: 'Coimbatore', state: 'Tamil Nadu', events: 13, opps: 9 },
+      { name: 'Guwahati', state: 'Assam', events: 8, opps: 5 },
+      { name: 'Bhubaneswar', state: 'Odisha', events: 10, opps: 6 },
+      { name: 'Dehradun', state: 'Uttarakhand', events: 7, opps: 4 },
+      { name: 'Thiruvananthapuram', state: 'Kerala', events: 9, opps: 6 },
+      { name: 'Noida', state: 'Delhi NCR', events: 25, opps: 18 },
+      { name: 'Gurgaon', state: 'Delhi NCR', events: 22, opps: 16 },
+      { name: 'Visakhapatnam', state: 'Andhra Pradesh', events: 11, opps: 7 },
+      { name: 'Mangalore', state: 'Karnataka', events: 10, opps: 6 },
+    ];
+
+    const locationInput = document.getElementById('locationInput');
+    const suggestionsBox = document.getElementById('locationSuggestions');
+    const detectBtn = document.getElementById('detectLocationBtn');
+    const resultsInfo = document.getElementById('locationResults');
+    const resultsText = document.getElementById('resultsText');
+    const cityChips = document.querySelectorAll('.city-chip');
+
+    function showResults(city) {
+      const data = cityData.find(c => c.name.toLowerCase() === city.toLowerCase());
+      if (data) {
+        resultsText.innerHTML = `<strong>${data.events} events</strong> & <strong>${data.opps} sponsorship opportunities</strong> found near <strong>${data.name}</strong>, ${data.state}`;
+      } else {
+        resultsText.innerHTML = `Searching sponsorships near <strong>${city}</strong>... We're expanding there soon!`;
+      }
+      resultsInfo.classList.add('active');
+      resultsInfo.style.animation = 'fadeInUp 0.4s ease';
+    }
+
+    function selectCity(cityName) {
+      locationInput.value = cityName;
+      suggestionsBox.classList.remove('active');
+      cityChips.forEach(c => {
+        c.classList.toggle('active', c.dataset.city.toLowerCase() === cityName.toLowerCase());
+      });
+      showResults(cityName);
+    }
+
+    // Autocomplete
+    locationInput.addEventListener('input', () => {
+      const val = locationInput.value.trim().toLowerCase();
+      if (val.length < 1) {
+        suggestionsBox.classList.remove('active');
+        return;
+      }
+      const matches = cityData.filter(c =>
+        c.name.toLowerCase().includes(val) || c.state.toLowerCase().includes(val)
+      ).slice(0, 6);
+
+      if (matches.length === 0) {
+        suggestionsBox.innerHTML = `<div class="location-suggestion" style="color:var(--text-muted);pointer-events:none;"><i class="fa-solid fa-circle-info"></i> No cities found — try another name</div>`;
+      } else {
+        suggestionsBox.innerHTML = matches.map(c => `
+          <div class="location-suggestion" data-city="${c.name}">
+            <i class="fa-solid fa-location-dot"></i>
+            <span><span class="city-name">${c.name}</span>, ${c.state}</span>
+            <span class="city-count">${c.events} events</span>
+          </div>
+        `).join('');
+      }
+      suggestionsBox.classList.add('active');
+
+      suggestionsBox.querySelectorAll('.location-suggestion[data-city]').forEach(el => {
+        el.addEventListener('click', () => selectCity(el.dataset.city));
+      });
+    });
+
+    locationInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && locationInput.value.trim()) {
+        suggestionsBox.classList.remove('active');
+        selectCity(locationInput.value.trim());
+      }
+    });
+
+    // Close suggestions on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.location-input-wrap')) {
+        suggestionsBox.classList.remove('active');
+      }
+    });
+
+    // City chip clicks
+    cityChips.forEach(chip => {
+      chip.addEventListener('click', () => selectCity(chip.dataset.city));
+    });
+
+    // Detect location via Geolocation API + reverse geocoding
+    detectBtn.addEventListener('click', () => {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
+      }
+      const btnSpan = detectBtn.querySelector('span');
+      const btnIcon = detectBtn.querySelector('i');
+      detectBtn.classList.add('loading');
+      btnSpan.textContent = 'Detecting...';
+      btnIcon.className = 'fa-solid fa-spinner';
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=en`);
+            const data = await res.json();
+            const city = data.address.city || data.address.town || data.address.village || data.address.county || 'Your Location';
+            locationInput.value = city;
+            selectCity(city);
+          } catch {
+            locationInput.value = 'Location detected';
+            showResults('Your Area');
+          }
+          detectBtn.classList.remove('loading');
+          btnSpan.textContent = 'Detected!';
+          btnIcon.className = 'fa-solid fa-circle-check';
+          setTimeout(() => {
+            btnSpan.textContent = 'Detect My Location';
+            btnIcon.className = 'fa-solid fa-crosshairs';
+          }, 2500);
+        },
+        () => {
+          detectBtn.classList.remove('loading');
+          btnSpan.textContent = 'Detect My Location';
+          btnIcon.className = 'fa-solid fa-crosshairs';
+          alert('Unable to detect location. Please allow location access or enter your city manually.');
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    });
+
+    // Browse button scroll
+    document.getElementById('browseResultsBtn').addEventListener('click', () => {
+      const oppSection = document.querySelector('.opp-grid');
+      if (oppSection) oppSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   </script>
 </body>
