@@ -1,0 +1,2581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FestConnect — Where Campus Energy Meets Brand Power</title>
+  <meta name="description" content="The smartest platform for colleges to find sponsors and brands to reach millions of students across India." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* ===== CSS CUSTOM PROPERTIES ===== */
+    :root {
+      --bg-primary: #0A0A0F;
+      --bg-secondary: #0D0D1A;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-glass: rgba(255, 255, 255, 0.05);
+      --border-glass: rgba(255, 255, 255, 0.08);
+      --purple: #7C3AED;
+      --blue: #2563EB;
+      --pink: #EC4899;
+      --green: #10B981;
+      --text-primary: #F1F5F9;
+      --text-secondary: #94A3B8;
+      --text-muted: #64748B;
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --glow-purple: 0 0 30px rgba(124, 58, 237, 0.3);
+      --glow-blue: 0 0 30px rgba(37, 99, 235, 0.3);
+      --glow-pink: 0 0 30px rgba(236, 72, 153, 0.3);
+      --gradient-main: linear-gradient(135deg, var(--purple), var(--pink), var(--blue));
+      --gradient-purple-blue: linear-gradient(135deg, var(--purple), var(--blue));
+      --gradient-purple-pink: linear-gradient(135deg, var(--purple), var(--pink));
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--purple) var(--bg-primary);
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+      cursor: default;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; }
+
+    /* ===== CURSOR GLOW FOLLOWER ===== */
+    .cursor-glow {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.06), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+    .cursor-glow.active { opacity: 1; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ===== UTILITY ===== */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--purple), var(--pink), var(--blue), var(--purple));
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 6s ease-in-out infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 16px;
+      display: inline-block;
+      text-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+    }
+
+    .section-heading {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .section-sub {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: -50%; left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+
+    .btn:hover::after {
+      left: 120%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), var(--pink), var(--blue));
+      background-size: 200% 200%;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.25), 0 0 60px rgba(124, 58, 237, 0.1);
+      animation: btnGradient 4s ease-in-out infinite;
+    }
+
+    @keyframes btnGradient {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.5), 0 0 80px rgba(124, 58, 237, 0.2), 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+      transition: all 0.1s;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-glass);
+      backdrop-filter: blur(10px);
+    }
+    .btn-outline:hover {
+      border-color: var(--purple);
+      background: rgba(124, 58, 237, 0.06);
+      box-shadow: 0 0 25px rgba(124, 58, 237, 0.2), inset 0 0 20px rgba(124, 58, 237, 0.03);
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn-outline:active {
+      transform: translateY(0) scale(0.98);
+      transition: all 0.1s;
+    }
+
+    /* ===== ANIMATED BACKGROUND PARTICLES ===== */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 16px 0;
+      transition: all 0.4s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-glass);
+      padding: 10px 0;
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .nav-logo .logo-icon {
+      width: 38px; height: 38px;
+      background: var(--gradient-main);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: var(--glow-purple);
+      animation: logoGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes logoGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
+      50% { box-shadow: 0 0 35px rgba(124, 58, 237, 0.5), 0 0 60px rgba(124, 58, 237, 0.15); }
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--gradient-main);
+      transition: width 0.3s;
+      border-radius: 1px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+      text-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+    }
+    .nav-links a:hover::after { width: 100%; }
+
+    .nav-links a.active {
+      color: var(--text-primary);
+    }
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-buttons .btn {
+      padding: 10px 20px;
+      font-size: 0.85rem;
+      border-radius: 10px;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 1001;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      width: 24px; height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      background: rgba(10, 10, 15, 0.97);
+      backdrop-filter: blur(30px);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .mobile-menu.active { display: flex; }
+
+    .mobile-menu a {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 0.3s;
+    }
+
+    .mobile-menu a:hover { color: var(--text-primary); }
+
+    .mobile-menu .btn {
+      margin-top: 8px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 24px 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      will-change: transform;
+      transition: transform 0.3s ease-out;
+    }
+
+    .hero-orb--1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(124,58,237,0.3), transparent 70%);
+      top: -10%; left: -10%;
+      animation: orbFloat1 12s ease-in-out infinite;
+    }
+
+    .hero-orb--2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(236,72,153,0.25), transparent 70%);
+      bottom: -10%; right: -5%;
+      animation: orbFloat2 10s ease-in-out infinite;
+    }
+
+    .hero-orb--3 {
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(37,99,235,0.22), transparent 70%);
+      top: 30%; right: 20%;
+      animation: orbFloat3 14s ease-in-out infinite;
+    }
+
+    @keyframes orbFloat1 {
+      0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      25% { transform: translate(60px, -40px) scale(1.08) rotate(5deg); }
+      50% { transform: translate(20px, 40px) scale(0.95) rotate(-3deg); }
+      75% { transform: translate(-40px, -20px) scale(1.03) rotate(2deg); }
+    }
+
+    @keyframes orbFloat2 {
+      0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      25% { transform: translate(-50px, 30px) scale(1.05) rotate(-4deg); }
+      50% { transform: translate(30px, -50px) scale(0.93) rotate(6deg); }
+      75% { transform: translate(50px, 20px) scale(1.07) rotate(-2deg); }
+    }
+
+    @keyframes orbFloat3 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-30px, -40px) scale(1.1); }
+      66% { transform: translate(40px, 30px) scale(0.9); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 50px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      backdrop-filter: blur(10px);
+      animation: badgeBorderGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes badgeBorderGlow {
+      0%, 100% { border-color: var(--border-glass); box-shadow: none; }
+      50% { border-color: rgba(124, 58, 237, 0.3); box-shadow: 0 0 20px rgba(124, 58, 237, 0.08); }
+    }
+
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.8rem, 6.5vw, 5rem);
+      font-weight: 800;
+      line-height: 1.08;
+      margin-bottom: 24px;
+      letter-spacing: -1.5px;
+      text-shadow: 0 0 80px rgba(124, 58, 237, 0.15);
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-secondary);
+      max-width: 650px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 20px 32px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      backdrop-filter: blur(15px);
+      transition: all 0.4s;
+    }
+
+    .stats-bar:hover {
+      border-color: rgba(124, 58, 237, 0.2);
+      box-shadow: 0 0 40px rgba(124, 58, 237, 0.08);
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .stat-item .stat-num {
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .stat-divider {
+      width: 4px; height: 4px;
+      background: var(--text-muted);
+      border-radius: 50%;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-it-works {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .how-it-works .section-center {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .how-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 56px;
+    }
+
+    .how-tab {
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border-glass);
+      background: transparent;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+      font-family: var(--font-body);
+    }
+
+    .how-tab.active {
+      background: var(--gradient-main);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: var(--glow-purple);
+    }
+
+    .how-tab:hover:not(.active) {
+      border-color: var(--purple);
+      color: var(--text-primary);
+    }
+
+    .how-steps {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .how-steps.active { display: grid; }
+
+    .how-steps::before {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: calc(16.66% + 16px);
+      right: calc(16.66% + 16px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--pink), var(--blue));
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .step-card {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      transition: all 0.4s;
+    }
+
+    .step-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .step-card:hover .step-number {
+      border-color: rgba(124, 58, 237, 0.4);
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.2), inset 0 0 20px rgba(124, 58, 237, 0.05);
+      transform: scale(1.08);
+    }
+
+    .step-number {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      background: var(--bg-glass);
+      border: 1.5px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--purple);
+      backdrop-filter: blur(10px);
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: stepFloat 4s ease-in-out infinite;
+    }
+
+    .step-card:nth-child(2) .step-number { animation-delay: -1.3s; }
+    .step-card:nth-child(3) .step-number { animation-delay: -2.6s; }
+
+    @keyframes stepFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .step-card:hover .step-number { animation-play-state: paused; }
+
+    .step-number i {
+      font-size: 1.4rem;
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .step-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      transition: all 0.3s;
+    }
+
+    .step-card:hover h3 {
+      text-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+    }
+
+    .step-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    /* ===== FEATURED EVENTS ===== */
+    .featured-events {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .featured-events .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .event-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(15px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform, box-shadow;
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 21px;
+      padding: 1.5px;
+      background: linear-gradient(135deg, transparent 20%, var(--purple) 40%, var(--pink) 60%, var(--blue) 80%, transparent);
+      background-size: 300% 300%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.5s;
+      animation: borderRotate 4s linear infinite paused;
+    }
+
+    @keyframes borderRotate {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .event-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(124,58,237,0.08), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+      border-radius: 20px;
+    }
+
+    .event-card:hover::before {
+      opacity: 1;
+      animation-play-state: running;
+    }
+
+    .event-card:hover::after { opacity: 1; }
+
+    .event-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 60px rgba(124, 58, 237, 0.2), 0 0 40px rgba(124, 58, 237, 0.05);
+      border-color: transparent;
+    }
+
+    .event-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .event-type-tag {
+      padding: 5px 14px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s;
+    }
+
+    .event-card:hover .event-type-tag {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.15);
+    }
+
+    .tag-tech { background: rgba(37, 99, 235, 0.15); color: #60A5FA; }
+    .tag-cultural { background: rgba(236, 72, 153, 0.15); color: #F472B6; }
+    .tag-dj { background: rgba(124, 58, 237, 0.15); color: #A78BFA; }
+    .tag-hackathon { background: rgba(16, 185, 129, 0.15); color: #34D399; }
+    .tag-sports { background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+    .tag-fashion { background: rgba(236, 72, 153, 0.15); color: #F472B6; }
+
+    .sponsorship-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--green);
+      padding: 4px 10px;
+      border-radius: 50px;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .sponsorship-badge .dot-green {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .event-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .event-college {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .event-college i { font-size: 0.8rem; color: var(--purple); }
+
+    .event-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-glass);
+    }
+
+    .event-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .event-meta-item i {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      width: 16px;
+      text-align: center;
+    }
+
+    .event-meta-item.highlight {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* ===== FOR INSTITUTIONS ===== */
+    .for-institutions {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .split-left .section-heading {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+    }
+
+    .split-left .section-sub {
+      margin-bottom: 32px;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      border-radius: 16px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .feature-item:hover {
+      border-color: rgba(124, 58, 237, 0.25);
+      transform: translateX(8px);
+      background: rgba(124, 58, 237, 0.04);
+      box-shadow: 0 8px 30px rgba(124, 58, 237, 0.1), -4px 0 20px rgba(124, 58, 237, 0.08);
+    }
+
+    .feature-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--gradient-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: #fff;
+      transition: all 0.4s;
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+    }
+
+    .feature-item:hover .feature-icon {
+      transform: scale(1.12) rotate(-5deg);
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.4);
+    }
+
+    .feature-text h4 {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .feature-text p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ===== FOR SPONSORS ===== */
+    .for-sponsors {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .sponsors-card-wrap {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: 64px;
+      backdrop-filter: blur(15px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sponsors-card-wrap::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -20%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.08), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .sponsors-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sponsors-inner .section-center {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .sponsors-inner .section-sub {
+      margin: 0 auto;
+    }
+
+    .sponsor-features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .sponsor-feature-card {
+      text-align: center;
+      padding: 28px 20px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-glass);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sponsor-feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 50% 0%, rgba(37, 99, 235, 0.08), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .sponsor-feature-card:hover::before { opacity: 1; }
+
+    .sponsor-feature-card:hover {
+      border-color: rgba(37, 99, 235, 0.35);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(37, 99, 235, 0.12);
+    }
+
+    .sponsor-feature-card .sf-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: var(--gradient-purple-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 1.2rem;
+      color: #fff;
+      transition: all 0.4s;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sponsor-feature-card:hover .sf-icon {
+      transform: translateY(-4px) scale(1.1);
+      box-shadow: 0 0 35px rgba(37, 99, 235, 0.4);
+    }
+
+    .sponsor-feature-card h4 {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .sponsor-feature-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .brands-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .brand-box {
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: 1px dashed var(--border-glass);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: all 0.4s;
+    }
+
+    .brand-box:hover {
+      border-color: var(--purple);
+      border-style: solid;
+      color: var(--text-primary);
+      background: rgba(124, 58, 237, 0.06);
+      box-shadow: 0 0 25px rgba(124, 58, 237, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .sponsors-cta {
+      text-align: center;
+    }
+
+    /* ===== PRICING ===== */
+    .pricing {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .pricing .section-center {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .pricing .section-sub { margin: 0 auto; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 40px 32px;
+      backdrop-filter: blur(15px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      transition: left 0.8s;
+    }
+
+    .pricing-card:hover::after {
+      left: 150%;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      border-color: rgba(124, 58, 237, 0.15);
+    }
+
+    .pricing-card.popular {
+      border-color: var(--purple);
+      box-shadow: 0 0 50px rgba(124, 58, 237, 0.15), 0 0 100px rgba(124, 58, 237, 0.05);
+      background: rgba(124, 58, 237, 0.05);
+      animation: popularGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes popularGlow {
+      0%, 100% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.15), 0 0 80px rgba(124, 58, 237, 0.05); }
+      50% { box-shadow: 0 0 60px rgba(124, 58, 237, 0.25), 0 0 120px rgba(124, 58, 237, 0.08); }
+    }
+
+    .pricing-card.popular:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 60px rgba(124, 58, 237, 0.3), 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient-main);
+      background-size: 200% 200%;
+      animation: btnGradient 3s ease-in-out infinite;
+      padding: 6px 20px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+    }
+
+    .pricing-card .plan-name {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pricing-card .plan-target {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .pricing-card .plan-price {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .pricing-card .plan-price span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .pricing-card .plan-period {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .plan-features {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .plan-features li i {
+      font-size: 0.8rem;
+      color: var(--green);
+    }
+
+    .plan-features li.disabled {
+      color: var(--text-muted);
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .plan-features li.disabled i { color: var(--text-muted); }
+
+    .pricing-card .btn { width: 100%; justify-content: center; }
+
+    /* ===== TESTIMONIALS ===== */
+    .testimonials {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+    }
+
+    .testimonials .section-center {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .testimonials .section-sub { margin: 0 auto; }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(15px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial-card::before {
+      content: '\201C';
+      position: absolute;
+      top: 16px; right: 24px;
+      font-size: 5rem;
+      font-family: Georgia, serif;
+      color: var(--purple);
+      opacity: 0;
+      transition: opacity 0.5s;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .testimonial-card:hover::before { opacity: 0.08; }
+
+    .testimonial-card:hover {
+      border-color: rgba(124, 58, 237, 0.25);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(124, 58, 237, 0.1), 0 0 30px rgba(124, 58, 237, 0.05);
+    }
+
+    .testimonial-card:hover .testimonial-avatar {
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+      transform: scale(1.08);
+    }
+
+    .testimonial-card .quote-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      opacity: 0.15;
+    }
+
+    .testimonial-card blockquote {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--gradient-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      transition: all 0.4s;
+    }
+
+    .testimonial-info h4 {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .testimonial-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .testimonial-stars {
+      margin-bottom: 16px;
+      color: #FBBF24;
+      font-size: 0.85rem;
+      display: flex;
+      gap: 3px;
+    }
+
+    /* ===== CTA BANNER ===== */
+    .cta-banner {
+      position: relative;
+      z-index: 1;
+      padding: 100px 0;
+    }
+
+    .cta-inner {
+      text-align: center;
+      padding: 72px 48px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(37,99,235,0.1), rgba(236,72,153,0.1));
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s;
+      animation: ctaPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes ctaPulse {
+      0%, 100% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.05); }
+      50% { box-shadow: 0 0 80px rgba(124, 58, 237, 0.1), 0 0 120px rgba(236, 72, 153, 0.05); }
+    }
+
+    .cta-inner:hover {
+      border-color: rgba(124, 58, 237, 0.35);
+      box-shadow: 0 0 80px rgba(124, 58, 237, 0.15), 0 0 120px rgba(236, 72, 153, 0.05);
+    }
+
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 50%, rgba(124,58,237,0.1), transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(236,72,153,0.08), transparent 50%);
+      pointer-events: none;
+      animation: ctaBgShift 10s ease-in-out infinite;
+    }
+
+    @keyframes ctaBgShift {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(3%, -3%); }
+    }
+
+    .cta-inner > * { position: relative; z-index: 1; }
+
+    .cta-inner h2 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .cta-inner p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 36px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      position: relative;
+      z-index: 1;
+      padding: 64px 0 32px;
+      border-top: 1px solid var(--border-glass);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand .nav-logo {
+      margin-bottom: 16px;
+    }
+
+    .footer-brand p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      max-width: 300px;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-socials a {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+
+    .footer-socials a:hover {
+      border-color: var(--purple);
+      color: var(--text-primary);
+      transform: translateY(-4px) scale(1.1);
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
+      background: rgba(124, 58, 237, 0.08);
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .footer-col a {
+      display: inline-block;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .footer-col a::after {
+      content: '';
+      position: absolute;
+      bottom: 2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--purple);
+      transition: width 0.3s;
+    }
+
+    .footer-col a:hover {
+      color: var(--text-primary);
+      transform: translateX(4px);
+    }
+
+    .footer-col a:hover::after { width: 100%; }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-glass);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-bottom-links a {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .footer-bottom-links a:hover { color: var(--text-secondary); }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.88);
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal-scale.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Stagger children animation */
+    .stagger-children > *:nth-child(1) { transition-delay: 0.05s; }
+    .stagger-children > *:nth-child(2) { transition-delay: 0.12s; }
+    .stagger-children > *:nth-child(3) { transition-delay: 0.19s; }
+    .stagger-children > *:nth-child(4) { transition-delay: 0.26s; }
+    .stagger-children > *:nth-child(5) { transition-delay: 0.33s; }
+    .stagger-children > *:nth-child(6) { transition-delay: 0.40s; }
+
+    /* Glowing separator line between sections */
+    .section-glow-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.3), rgba(236,72,153,0.2), rgba(37,99,235,0.3), transparent);
+      margin: 0;
+      border: none;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .events-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-card:last-child { grid-column: 1 / -1; max-width: 400px; margin: 0 auto; }
+      .sponsor-features-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-buttons { display: none; }
+      .hamburger { display: flex; }
+
+      .hero { padding: 120px 24px 60px; min-height: auto; }
+      .hero h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
+
+      .stats-bar {
+        flex-direction: column;
+        gap: 8px;
+        padding: 16px 20px;
+      }
+
+      .stat-divider { display: none; }
+
+      .split-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .how-steps {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .how-steps::before { display: none; }
+
+      .events-grid { grid-template-columns: 1fr; }
+
+      .sponsors-card-wrap { padding: 32px 20px; }
+
+      .sponsor-features-grid { grid-template-columns: 1fr; }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .pricing-card:last-child { max-width: none; }
+
+      .testimonials-grid { grid-template-columns: 1fr; }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .cta-inner { padding: 40px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-buttons { flex-direction: column; }
+      .hero-buttons .btn { width: 100%; justify-content: center; }
+      .cta-buttons { flex-direction: column; }
+      .cta-buttons .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PARTICLE CANVAS -->
+  <canvas id="particles-canvas"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">⚡</div>
+        FestConnect
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#events">Browse Events</a>
+        <a href="#sponsors">For Sponsors</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#" class="login-link">Login</a>
+      </div>
+      <div class="nav-buttons">
+        <a href="#" class="btn btn-outline">List Your Event</a>
+        <a href="#events" class="btn btn-primary">Find Events</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" class="mobile-nav-link">Features</a>
+    <a href="#events" class="mobile-nav-link">Browse Events</a>
+    <a href="#sponsors" class="mobile-nav-link">For Sponsors</a>
+    <a href="#pricing" class="mobile-nav-link">Pricing</a>
+    <a href="#" class="mobile-nav-link">Login</a>
+    <a href="#" class="btn btn-outline">List Your Event</a>
+    <a href="#events" class="btn btn-primary">Find Events</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb--1"></div>
+      <div class="hero-orb hero-orb--2"></div>
+      <div class="hero-orb hero-orb--3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge reveal-scale">
+        <span class="dot"></span>
+        <span>India's #1 Campus Sponsorship Platform</span>
+      </div>
+      <h1 class="reveal">Where Campus Energy<br>Meets <span class="gradient-text">Brand Power</span></h1>
+      <p class="reveal">The smartest way for colleges to find sponsors and brands to reach millions of students across India. List your fest, attract top brands, and close deals — all in one place.</p>
+      <div class="hero-buttons reveal">
+        <a href="#" class="btn btn-primary">List Your Fest <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="#events" class="btn btn-outline">Discover Events</a>
+      </div>
+      <div class="stats-bar reveal">
+        <div class="stat-item">
+          <span class="stat-num">500+</span> Events Listed
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">₹2Cr+</span> Sponsorships Facilitated
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">200+</span> Brands
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">50+</span> Cities
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-glow-divider">
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works" id="features">
+    <div class="container">
+      <div class="section-center reveal">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-heading">Simple Steps to <span class="gradient-text">Get Started</span></h2>
+        <p class="section-sub" style="margin:0 auto;">Whether you're an institution looking for sponsors or a brand seeking audience — we've got you.</p>
+      </div>
+      <div class="how-tabs reveal">
+        <button class="how-tab active" data-target="steps-institution">For Institutions</button>
+        <button class="how-tab" data-target="steps-sponsors">For Sponsors</button>
+      </div>
+
+      <!-- Institution Steps -->
+      <div class="how-steps active" id="steps-institution">
+        <div class="step-card reveal" style="transition-delay:0.1s">
+          <div class="step-number"><i class="fa-solid fa-file-circle-plus"></i></div>
+          <h3>Create Your Listing</h3>
+          <p>Add your event details, audience stats, sponsorship tiers, and upload your brochure in minutes.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.2s">
+          <div class="step-number"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+          <h3>Get Discovered</h3>
+          <p>Brands searching for sponsorship opportunities will find your event through smart matching and filters.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.3s">
+          <div class="step-number"><i class="fa-solid fa-handshake"></i></div>
+          <h3>Close Deals</h3>
+          <p>Receive proposals, negotiate directly, and finalize sponsorships — all through the platform.</p>
+        </div>
+      </div>
+
+      <!-- Sponsor Steps -->
+      <div class="how-steps" id="steps-sponsors">
+        <div class="step-card reveal" style="transition-delay:0.1s">
+          <div class="step-number"><i class="fa-solid fa-compass"></i></div>
+          <h3>Browse Events</h3>
+          <p>Explore hundreds of verified campus events across India — fests, hackathons, DJ nights, and more.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.2s">
+          <div class="step-number"><i class="fa-solid fa-filter"></i></div>
+          <h3>Filter by Audience</h3>
+          <p>Use powerful filters — city, budget, event type, footfall, and demographics — to find perfect matches.</p>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.3s">
+          <div class="step-number"><i class="fa-solid fa-bolt"></i></div>
+          <h3>Connect Instantly</h3>
+          <p>Send sponsorship proposals directly to event organizers. No middlemen, no delays.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED EVENTS -->
+  <section class="featured-events" id="events">
+    <div class="container">
+      <div class="section-header reveal">
+        <div>
+          <span class="section-label">Featured Events</span>
+          <h2 class="section-heading">Trending Events <span class="gradient-text">Seeking Sponsors</span></h2>
+          <p class="section-sub">Discover the hottest campus events across India — and sponsor the ones that match your brand.</p>
+        </div>
+        <a href="#" class="btn btn-outline">View All Events <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="events-grid stagger-children">
+        <!-- Event 1 -->
+        <div class="event-card reveal" style="transition-delay:0.05s">
+          <div class="event-card-top">
+            <span class="event-type-tag tag-tech">Tech Fest</span>
+            <span class="sponsorship-badge"><span class="dot-green"></span> Sponsorship Open</span>
+          </div>
+          <h3>TechFest 2025</h3>
+          <div class="event-college"><i class="fa-solid fa-graduation-cap"></i> IIT Pune</div>
+          <div class="event-meta">
+            <div class="event-meta-item"><i class="fa-regular fa-calendar"></i> March 15, 2025</div>
+            <div class="event-meta-item"><i class="fa-solid fa-location-dot"></i> Pune</div>
+            <div class="event-meta-item"><i class="fa-solid fa-users"></i> 5,000 attendees</div>
+            <div class="event-meta-item highlight"><i class="fa-solid fa-indian-rupee-sign"></i> ₹2L – ₹10L</div>
+          </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="event-card reveal" style="transition-delay:0.1s">
+          <div class="event-card-top">
+            <span class="event-type-tag tag-dj">DJ Night</span>
+            <span class="sponsorship-badge"><span class="dot-green"></span> Sponsorship Open</span>
+          </div>
+          <h3>Rhythm DJ Night</h3>
+          <div class="event-college"><i class="fa-solid fa-graduation-cap"></i> VIT Chennai</div>
+          <div class="event-meta">
+            <div class="event-meta-item"><i class="fa-regular fa-calendar"></i> Feb 28, 2025</div>
+            <div class="event-meta-item"><i class="fa-solid fa-location-dot"></i> Chennai</div>
+            <div class="event-meta-item"><i class="fa-solid fa-users"></i> 3,000 attendees</div>
+            <div class="event-meta-item highlight"><i class="fa-solid fa-indian-rupee-sign"></i> ₹50K – ₹3L</div>
+          </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="event-card reveal" style="transition-delay:0.15s">
+          <div class="event-card-top">
+            <span class="event-type-tag tag-cultural">Cultural</span>
+            <span class="sponsorship-badge"><span class="dot-green"></span> Sponsorship Open</span>
+          </div>
+          <h3>Culturals Utsav</h3>
+          <div class="event-college"><i class="fa-solid fa-graduation-cap"></i> Delhi University</div>
+          <div class="event-meta">
+            <div class="event-meta-item"><i class="fa-regular fa-calendar"></i> April 5, 2025</div>
+            <div class="event-meta-item"><i class="fa-solid fa-location-dot"></i> New Delhi</div>
+            <div class="event-meta-item"><i class="fa-solid fa-users"></i> 8,000 attendees</div>
+            <div class="event-meta-item highlight"><i class="fa-solid fa-indian-rupee-sign"></i> ₹1L – ₹8L</div>
+          </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="event-card reveal" style="transition-delay:0.2s">
+          <div class="event-card-top">
+            <span class="event-type-tag tag-hackathon">Hackathon</span>
+          </div>
+          <h3>Hackathon X</h3>
+          <div class="event-college"><i class="fa-solid fa-graduation-cap"></i> BITS Hyderabad</div>
+          <div class="event-meta">
+            <div class="event-meta-item"><i class="fa-regular fa-calendar"></i> March 22, 2025</div>
+            <div class="event-meta-item"><i class="fa-solid fa-location-dot"></i> Hyderabad</div>
+            <div class="event-meta-item"><i class="fa-solid fa-users"></i> 1,200 attendees</div>
+            <div class="event-meta-item highlight"><i class="fa-solid fa-indian-rupee-sign"></i> ₹1L – ₹5L</div>
+          </div>
+        </div>
+
+        <!-- Event 5 -->
+        <div class="event-card reveal" style="transition-delay:0.25s">
+          <div class="event-card-top">
+            <span class="event-type-tag tag-sports">Sports</span>
+            <span class="sponsorship-badge"><span class="dot-green"></span> Sponsorship Open</span>
+          </div>
+          <h3>Annual Sports Meet</h3>
+          <div class="event-college"><i class="fa-solid fa-graduation-cap"></i> Symbiosis Pune</div>
+          <div class="event-meta">
+            <div class="event-meta-item"><i class="fa-regular fa-calendar"></i> March 10, 2025</div>
+            <div class="event-meta-item"><i class="fa-solid fa-location-dot"></i> Pune</div>
+            <div class="event-meta-item"><i class="fa-solid fa-users"></i> 4,000 attendees</div>
+            <div class="event-meta-item highlight"><i class="fa-solid fa-indian-rupee-sign"></i> ₹75K – ₹4L</div>
+          </div>
+        </div>
+
+        <!-- Event 6 -->
+        <div class="event-card reveal" style="transition-delay:0.3s">
+          <div class="event-card-top">
+            <span class="event-type-tag tag-fashion">Fashion</span>
+          </div>
+          <h3>Fashion Week</h3>
+          <div class="event-college"><i class="fa-solid fa-graduation-cap"></i> NIFT Mumbai</div>
+          <div class="event-meta">
+            <div class="event-meta-item"><i class="fa-regular fa-calendar"></i> April 12, 2025</div>
+            <div class="event-meta-item"><i class="fa-solid fa-location-dot"></i> Mumbai</div>
+            <div class="event-meta-item"><i class="fa-solid fa-users"></i> 2,500 attendees</div>
+            <div class="event-meta-item highlight"><i class="fa-solid fa-indian-rupee-sign"></i> ₹1L – ₹6L</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-glow-divider">
+
+  <!-- FOR INSTITUTIONS -->
+  <section class="for-institutions" id="institutions">
+    <div class="container">
+      <div class="split-layout">
+        <div class="split-left reveal-left">
+          <span class="section-label">For Institutions</span>
+          <h2 class="section-heading">Turn Your Fest Into a <span class="gradient-text">Fully Sponsored</span> Experience</h2>
+          <p class="section-sub">Stop chasing sponsors manually. List your event on FestConnect and let brands come to you — with verified profiles, professional brochures, and direct messaging built in.</p>
+          <div style="margin-top:32px">
+            <a href="#" class="btn btn-primary">List Your Event Free <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="feature-list reveal-right">
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div class="feature-text">
+              <h4>Professional Event Listing</h4>
+              <p>Create a beautiful, detailed event page with audience stats, photos, and sponsorship tiers.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fa-solid fa-file-pdf"></i></div>
+            <div class="feature-text">
+              <h4>Auto-Generated Sponsorship Brochure</h4>
+              <p>Get a shareable PDF brochure created automatically from your event listing details.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+            <div class="feature-text">
+              <h4>Inbound Sponsor Requests</h4>
+              <p>Receive sponsorship proposals directly from interested brands — no cold emailing required.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="feature-text">
+              <h4>Verified College Badge</h4>
+              <p>Build credibility with a verified institution badge that brands trust.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="feature-text">
+              <h4>Past Event Portfolio</h4>
+              <p>Showcase your past events and sponsorship history to attract bigger brands.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-glow-divider">
+
+  <!-- FOR SPONSORS -->
+  <section class="for-sponsors" id="sponsors">
+    <div class="container">
+      <div class="sponsors-card-wrap reveal-scale">
+        <div class="sponsors-inner">
+          <div class="section-center">
+            <span class="section-label">For Sponsors & Brands</span>
+            <h2 class="section-heading">Reach Millions of Students at the <span class="gradient-text">Moments That Matter</span></h2>
+            <p class="section-sub">Discover, filter, and connect with campus events that align with your brand — from DJ nights to tech fests, across 50+ cities in India.</p>
+          </div>
+
+          <div class="sponsor-features-grid">
+            <div class="sponsor-feature-card">
+              <div class="sf-icon"><i class="fa-solid fa-sliders"></i></div>
+              <h4>Filter by City / Audience / Budget</h4>
+              <p>Powerful search filters to find events that match your target audience perfectly.</p>
+            </div>
+            <div class="sponsor-feature-card">
+              <div class="sf-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              <h4>Smart Brand-Event Matching</h4>
+              <p>Our algorithm suggests events based on your brand profile and sponsorship history.</p>
+            </div>
+            <div class="sponsor-feature-card">
+              <div class="sf-icon"><i class="fa-solid fa-comments"></i></div>
+              <h4>Direct Messaging</h4>
+              <p>Chat directly with event organizers. No middlemen, no waiting.</p>
+            </div>
+            <div class="sponsor-feature-card">
+              <div class="sf-icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h4>Post-Event Impact Reports</h4>
+              <p>Get detailed analytics on reach, engagement, and brand visibility after every event.</p>
+            </div>
+            <div class="sponsor-feature-card">
+              <div class="sf-icon"><i class="fa-solid fa-gift"></i></div>
+              <h4>In-kind Sponsorship Options</h4>
+              <p>Offer products, services, or experiences instead of cash — flexible for every budget.</p>
+            </div>
+            <div class="sponsor-feature-card">
+              <div class="sf-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <h4>Verified Events Only</h4>
+              <p>All events are verified by our team so you only sponsor legitimate, high-quality events.</p>
+            </div>
+          </div>
+
+          <div class="brands-row">
+            <div class="brand-box">Your Brand Here</div>
+            <div class="brand-box">Your Brand Here</div>
+            <div class="brand-box">Your Brand Here</div>
+            <div class="brand-box">Your Brand Here</div>
+            <div class="brand-box">Your Brand Here</div>
+          </div>
+
+          <div class="sponsors-cta">
+            <a href="#" class="btn btn-primary">Start Exploring Events <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-glow-divider">
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-center reveal">
+        <span class="section-label">Pricing</span>
+        <h2 class="section-heading">Plans That <span class="gradient-text">Scale With You</span></h2>
+        <p class="section-sub">Whether you're a college club or a Fortune 500 brand — we have a plan that fits.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="pricing-card reveal" style="transition-delay:0.05s">
+          <div class="plan-name">Free</div>
+          <div class="plan-target">For institutions getting started</div>
+          <div class="plan-price">₹0 <span>/ forever</span></div>
+          <div class="plan-period">No credit card required</div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> 1 Active Event Listing</li>
+            <li><i class="fa-solid fa-check"></i> Basic Event Page</li>
+            <li><i class="fa-solid fa-check"></i> Receive Sponsor Inquiries</li>
+            <li><i class="fa-solid fa-check"></i> Community Support</li>
+            <li class="disabled"><i class="fa-solid fa-xmark"></i> Auto-Generated Brochure</li>
+            <li class="disabled"><i class="fa-solid fa-xmark"></i> Verified Badge</li>
+            <li class="disabled"><i class="fa-solid fa-xmark"></i> Analytics Dashboard</li>
+          </ul>
+          <a href="#" class="btn btn-outline">Get Started Free</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-card popular reveal" style="transition-delay:0.1s">
+          <div class="popular-badge">MOST POPULAR</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-target">For institutions that mean business</div>
+          <div class="plan-price">₹999 <span>/ month</span></div>
+          <div class="plan-period">Billed annually at ₹9,990</div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> Unlimited Event Listings</li>
+            <li><i class="fa-solid fa-check"></i> Premium Event Page</li>
+            <li><i class="fa-solid fa-check"></i> Auto-Generated Brochure</li>
+            <li><i class="fa-solid fa-check"></i> Verified Institution Badge</li>
+            <li><i class="fa-solid fa-check"></i> Priority in Search Results</li>
+            <li><i class="fa-solid fa-check"></i> Analytics Dashboard</li>
+            <li><i class="fa-solid fa-check"></i> Dedicated Support</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Upgrade to Pro</a>
+        </div>
+
+        <!-- Brand -->
+        <div class="pricing-card reveal" style="transition-delay:0.15s">
+          <div class="plan-name">Brand Plan</div>
+          <div class="plan-target">For sponsors & businesses</div>
+          <div class="plan-price">₹4,999 <span>/ month</span></div>
+          <div class="plan-period">Billed annually at ₹49,990</div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> Unlimited Event Access</li>
+            <li><i class="fa-solid fa-check"></i> Smart Brand-Event Matching</li>
+            <li><i class="fa-solid fa-check"></i> Direct Messaging</li>
+            <li><i class="fa-solid fa-check"></i> Post-Event Impact Reports</li>
+            <li><i class="fa-solid fa-check"></i> Bulk Sponsorship Tools</li>
+            <li><i class="fa-solid fa-check"></i> Featured Brand Badge</li>
+            <li><i class="fa-solid fa-check"></i> Priority Support</li>
+          </ul>
+          <a href="#" class="btn btn-outline">Start Brand Plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-glow-divider">
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-center reveal">
+        <span class="section-label">Testimonials</span>
+        <h2 class="section-heading">Loved by <span class="gradient-text">Organizers & Brands</span></h2>
+        <p class="section-sub">See what campus leaders and marketing managers are saying about FestConnect.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal" style="transition-delay:0.05s">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <blockquote>"FestConnect completely changed how we approach sponsorships. We listed our cultural fest and got 12 sponsor inquiries within a week. The auto-brochure feature alone saved us 20+ hours."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">AK</div>
+            <div class="testimonial-info">
+              <h4>Ananya Krishnan</h4>
+              <p>Cultural Fest Coordinator, St. Xavier's Mumbai</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal" style="transition-delay:0.1s">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <blockquote>"As a D2C brand targeting Gen-Z, campus events are gold for us. FestConnect's filters and matching helped us sponsor 8 events in 3 months — with measurable ROI on each."</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">RG</div>
+            <div class="testimonial-info">
+              <h4>Rahul Gupta</h4>
+              <p>Marketing Manager, UrbanSnack (D2C Brand)</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal" style="transition-delay:0.15s">
+          <div class="testimonial-stars">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <blockquote>"We run one of the biggest hackathons in South India. FestConnect gave us visibility we could never have achieved by just emailing brands. Three title sponsors within two weeks!"</blockquote>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">VP</div>
+            <div class="testimonial-info">
+              <h4>Vikram Patel</h4>
+              <p>Technical Fest Head, NIT Trichy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-inner reveal-scale">
+        <h2>Ready to <span class="gradient-text">Transform</span> Your Event?</h2>
+        <p>Join 500+ institutions and 200+ brands already using FestConnect to power campus sponsorships.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn btn-primary">List Your Event <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="btn btn-outline">Become a Sponsor</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <div class="logo-icon">⚡</div>
+            FestConnect
+          </a>
+          <p>India's smartest platform connecting campus events with brand sponsors. Making every fest a fully-sponsored experience.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="#features">How It Works</a>
+          <a href="#events">Browse Events</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#">List Your Event</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#">About Us</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Report a Bug</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 FestConnect. Built for India's Campus Culture. 🇮🇳</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    /* ===== MOUSE TRACKING STATE ===== */
+    let mouseX = 0, mouseY = 0;
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    /* ===== CURSOR GLOW FOLLOWER ===== */
+    const cursorGlow = document.getElementById('cursorGlow');
+    if (!isMobile) {
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorGlow.style.left = e.clientX + 'px';
+        cursorGlow.style.top = e.clientY + 'px';
+        if (!cursorGlow.classList.contains('active')) cursorGlow.classList.add('active');
+      });
+      document.addEventListener('mouseleave', () => {
+        cursorGlow.classList.remove('active');
+      });
+    }
+
+    /* ===== PARTICLE BACKGROUND (Mouse-Reactive) ===== */
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let w, h;
+      const PARTICLE_COUNT = isMobile ? 40 : 90;
+      const CONNECT_DIST = 130;
+      const MOUSE_RADIUS = 180;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * w;
+          this.y = Math.random() * h;
+          this.baseVx = (Math.random() - 0.5) * 0.35;
+          this.baseVy = (Math.random() - 0.5) * 0.35;
+          this.vx = this.baseVx;
+          this.vy = this.baseVy;
+          this.radius = Math.random() * 1.8 + 0.5;
+          this.baseAlpha = Math.random() * 0.25 + 0.08;
+          this.alpha = this.baseAlpha;
+          this.hue = Math.random() > 0.5 ? 263 : 220; // purple or blue
+        }
+        update() {
+          // Mouse repulsion
+          if (!isMobile) {
+            const dx = this.x - mouseX;
+            const dy = this.y - (mouseY + window.scrollY);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < MOUSE_RADIUS && dist > 0) {
+              const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+              this.vx += (dx / dist) * force * 0.6;
+              this.vy += (dy / dist) * force * 0.6;
+              this.alpha = this.baseAlpha + force * 0.25;
+            } else {
+              this.alpha += (this.baseAlpha - this.alpha) * 0.05;
+            }
+          }
+
+          // Apply velocity with damping back to base
+          this.vx += (this.baseVx - this.vx) * 0.02;
+          this.vy += (this.baseVy - this.vy) * 0.02;
+          this.x += this.vx;
+          this.y += this.vy;
+
+          if (this.x < 0) this.x = w;
+          if (this.x > w) this.x = 0;
+          if (this.y < 0) this.y = h;
+          if (this.y > h) this.y = 0;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${this.hue}, 80%, 58%, ${this.alpha})`;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => { p.update(); p.draw(); });
+
+        // Draw connection lines
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CONNECT_DIST) {
+              const alpha = (1 - dist / CONNECT_DIST) * 0.1;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              const gradient = ctx.createLinearGradient(
+                particles[i].x, particles[i].y,
+                particles[j].x, particles[j].y
+              );
+              gradient.addColorStop(0, `hsla(${particles[i].hue}, 80%, 58%, ${alpha})`);
+              gradient.addColorStop(1, `hsla(${particles[j].hue}, 80%, 58%, ${alpha})`);
+              ctx.strokeStyle = gradient;
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    /* ===== HERO ORB PARALLAX ON MOUSE ===== */
+    if (!isMobile) {
+      const heroSection = document.querySelector('.hero');
+      const orbs = document.querySelectorAll('.hero-orb');
+      heroSection.addEventListener('mousemove', (e) => {
+        const rect = heroSection.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        orbs[0].style.transform = `translate(${x * 40}px, ${y * 30}px) scale(1.03)`;
+        orbs[1].style.transform = `translate(${x * -30}px, ${y * -25}px) scale(1.02)`;
+        orbs[2].style.transform = `translate(${x * 20}px, ${y * -35}px) scale(0.98)`;
+      });
+      heroSection.addEventListener('mouseleave', () => {
+        orbs.forEach(orb => orb.style.transform = '');
+      });
+    }
+
+    /* ===== NAVBAR SCROLL + ACTIVE LINK HIGHLIGHTING ===== */
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const sections = document.querySelectorAll('section[id]');
+
+    function updateNavbar() {
+      const scrollY = window.scrollY;
+      navbar.classList.toggle('scrolled', scrollY > 50);
+
+      // Highlight active section in nav
+      let current = '';
+      sections.forEach(section => {
+        const top = section.offsetTop - 200;
+        if (scrollY >= top) current = section.getAttribute('id');
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', updateNavbar, { passive: true });
+    updateNavbar();
+
+    /* ===== MOBILE MENU ===== */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+
+    /* ===== HOW IT WORKS TABS (enhanced) ===== */
+    const howTabs = document.querySelectorAll('.how-tab');
+    const howSteps = document.querySelectorAll('.how-steps');
+
+    howTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        howTabs.forEach(t => t.classList.remove('active'));
+        howSteps.forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        const target = document.getElementById(tab.dataset.target);
+        target.classList.add('active');
+        // Re-trigger reveal with stagger
+        const cards = target.querySelectorAll('.reveal');
+        cards.forEach((el, i) => {
+          el.classList.remove('visible');
+          el.style.transitionDelay = `${i * 0.12}s`;
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              el.classList.add('visible');
+            });
+          });
+        });
+      });
+    });
+
+    /* ===== CARD TILT + SPOTLIGHT EFFECT ===== */
+    if (!isMobile) {
+      const tiltCards = document.querySelectorAll('.event-card, .testimonial-card, .pricing-card');
+
+      tiltCards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * -5;
+          const rotateY = ((x - centerX) / centerX) * 5;
+
+          card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+          card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+          card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+          card.style.setProperty('--mouse-x', '50%');
+          card.style.setProperty('--mouse-y', '50%');
+        });
+      });
+    }
+
+    /* ===== MAGNETIC BUTTONS ===== */
+    if (!isMobile) {
+      document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px) scale(1.03)`;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = '';
+        });
+      });
+    }
+
+    /* ===== SCROLL REVEAL (Intersection Observer) ===== */
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.06,
+      rootMargin: '0px 0px -30px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    /* ===== SMOOTH SCROLL FOR NAV LINKS ===== */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          const offset = 80;
+          const y = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      });
+    });
+
+    /* ===== STAT COUNTER ANIMATION (Enhanced) ===== */
+    const statsBar = document.querySelector('.stats-bar');
+    let statsCounted = false;
+
+    function animateValue(el, start, end, prefix, suffix, duration, decimals) {
+      let startTime = null;
+      const dec = decimals || 0;
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        // Smooth ease-out-expo
+        const eased = 1 - Math.pow(2, -10 * progress);
+        const current = dec > 0
+          ? (eased * (end - start) + start).toFixed(dec)
+          : Math.floor(eased * (end - start) + start);
+        el.textContent = prefix + current + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !statsCounted) {
+          statsCounted = true;
+          const nums = document.querySelectorAll('.stat-num');
+          animateValue(nums[0], 0, 500, '', '+', 2000, 0);
+          animateValue(nums[1], 0, 2, '₹', 'Cr+', 2000, 0);
+          animateValue(nums[2], 0, 200, '', '+', 2000, 0);
+          animateValue(nums[3], 0, 50, '', '+', 2000, 0);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    if (statsBar) statsObserver.observe(statsBar);
+
+    /* ===== PARALLAX ON SCROLL FOR BACKGROUND ELEMENTS ===== */
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          // Subtle parallax on section glow dividers
+          document.querySelectorAll('.section-glow-divider').forEach(divider => {
+            const rect = divider.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              const intensity = (rect.top / window.innerHeight);
+              divider.style.opacity = 0.4 + Math.abs(0.5 - intensity) * 0.6;
+            }
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    /* ===== TYPEWRITER EFFECT FOR HERO BADGE ===== */
+    (function() {
+      const badge = document.querySelector('.hero-badge span:last-child');
+      if (!badge) return;
+      const text = badge.textContent;
+      badge.textContent = '';
+      let i = 0;
+      function type() {
+        if (i < text.length) {
+          badge.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, 35);
+        }
+      }
+      // Start after reveal animation
+      setTimeout(type, 800);
+    })();
+  </script>
+</body>
+</html>
