@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Dashboard — Sponsoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <div id="sidebarContainer"></div>
+        <div class="main-content">
+            <div id="topbarContainer"></div>
+            <div class="page-content">
+                <h1 class="page-title">Dashboard</h1>
+                <p class="page-subtitle" id="welcomeMsg">Welcome back!</p>
+                <div class="stats-row" id="statsRow"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" id="dashGrid">
+                    <div>
+                        <div class="section-head">Your Event Listings</div>
+                        <div id="eventsList"></div>
+                    </div>
+                    <div>
+                        <div class="section-head">Recent Notifications</div>
+                        <div class="notif-list" id="notifList"></div>
+                    </div>
+                </div>
+                <div class="btn-group" style="margin-top:24px;">
+                    <a href="/institution/create-event.html" class="btn-primary"><i class="fa-solid fa-plus"></i> Create
+                        New Event</a>
+                    <a href="/sponsor/messages.html" class="btn-secondary"><i class="fa-solid fa-message"></i>
+                        Messages</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/shared.js"></script>
+    <script>
+        if (!Session.require('institution')) throw '';
+        const user = Session.get();
+        document.getElementById('sidebarContainer').innerHTML = renderSidebar('dashboard');
+        document.getElementById('topbarContainer').innerHTML = renderTopbar();
+        initSidebarEvents();
+        document.getElementById('welcomeMsg').textContent = `Welcome back, ${user.collegeName}!`;
+        const events = (AppState.get('events') || []).filter(e => e.institutionId === user.id);
+        const totalViews = events.reduce((s, e) => s + (e.views || 0), 0);
+        const totalSaves = events.reduce((s, e) => s + (e.saves || 0), 0);
+        const totalInterests = events.reduce((s, e) => s + (e.interests || 0), 0);
+        document.getElementById('statsRow').innerHTML = `
+      <div class="stat-card"><div class="stat-icon" style="background:#DBEAFE;color:#2563EB;"><i class="fa-solid fa-eye"></i></div><div class="stat-value">${totalViews}</div><div class="stat-label">Total Views</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#F0FDF4;color:#22C55E;"><i class="fa-solid fa-bookmark"></i></div><div class="stat-value">${totalSaves}</div><div class="stat-label">Total Saves</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#FFF7ED;color:#F97316;"><i class="fa-solid fa-handshake"></i></div><div class="stat-value">${totalInterests}</div><div class="stat-label">Interest Expressed</div></div>
+      <div class="stat-card"><div class="stat-icon" style="background:#F5F3FF;color:#8B5CF6;"><i class="fa-solid fa-calendar"></i></div><div class="stat-value">${events.length}</div><div class="stat-label">Active Listings</div></div>
+    `;
+        const el = document.getElementById('eventsList');
+        if (events.length === 0) { el.innerHTML = '<div class="empty-state"><i class="fa-solid fa-calendar-plus"></i><p>No events yet. Create your first event!</p></div>'; }
+        else {
+            el.innerHTML = events.map(e => `
+      <div class="card" style="margin-bottom:12px;" onclick="window.location.href='/institution/edit-event.html?id=${e.id}'">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-weight:700;font-size:.95rem;">${e.eventName}</div><div style="font-size:.8rem;color:var(--text-secondary);">${e.type} · ${formatDate(e.date)}</div></div>
+          <span class="badge badge-green">${e.status}</span>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:10px;font-size:.78rem;color:var(--text-muted);">
+          <span><i class="fa-solid fa-eye"></i> ${e.views} views</span>
+          <span><i class="fa-solid fa-bookmark"></i> ${e.saves} saves</span>
+          <span><i class="fa-solid fa-handshake"></i> ${e.interests} interests</span>
+        </div>
+      </div>
+    `).join('');
+        }
+        const notifs = Notifications.getForUser(user.id);
+        const nl = document.getElementById('notifList');
+        if (notifs.length === 0) { nl.innerHTML = '<div class="empty-state"><i class="fa-solid fa-bell-slash"></i><p>No notifications yet</p></div>'; }
+        else {
+            nl.innerHTML = notifs.slice(0, 5).map(n => `
+      <div class="notif-item ${n.read ? '' : 'unread'}">
+        <div class="notif-icon" style="background:${n.type === 'success' ? 'var(--green-light)' : 'var(--primary-light)'}; color:${n.type === 'success' ? 'var(--green)' : 'var(--primary)'};">
+          <i class="fa-solid ${n.type === 'success' ? 'fa-circle-check' : 'fa-bell'}"></i>
+        </div>
+        <div class="notif-text">${n.message}</div>
+        <div class="notif-time">${timeAgo(n.time)}</div>
+      </div>
+    `).join('');
+        }
+        initReveal();
+    </script>
+</body>
+
+</html>

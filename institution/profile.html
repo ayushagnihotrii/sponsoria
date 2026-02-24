@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institution Profile — Sponsoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <div id="sidebarContainer"></div>
+        <div class="main-content">
+            <div id="topbarContainer"></div>
+            <div class="page-content">
+                <div class="profile-header" id="profileHeader"></div>
+                <div id="profileBody"></div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/shared.js"></script>
+    <script>
+        if (!Session.require('institution')) throw '';
+        const user = Session.get();
+        document.getElementById('sidebarContainer').innerHTML = renderSidebar('profile');
+        document.getElementById('topbarContainer').innerHTML = renderTopbar();
+        initSidebarEvents();
+        document.getElementById('profileHeader').innerHTML = `
+      <div class="profile-avatar">${user.collegeName?.charAt(0) || 'I'}</div>
+      <div class="profile-info">
+        <h2>${user.collegeName} ${user.verified ? '<span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified</span>' : '<span class="badge badge-orange">Unverified</span>'}</h2>
+        <div class="profile-meta">
+          <span><i class="fa-solid fa-location-dot"></i> ${user.city}, ${user.state}</span>
+          <span><i class="fa-solid fa-layer-group"></i> ${user.tier}</span>
+          <span><i class="fa-solid fa-users"></i> ${(user.studentStrength || 0).toLocaleString()} students</span>
+          <span><i class="fa-solid fa-user"></i> ${user.contactPerson}</span>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:8px;">
+          ${user.socialMedia?.instagram ? '<a href="#" style="color:var(--text-muted);font-size:1.1rem;"><i class="fa-brands fa-instagram"></i></a>' : ''}
+          ${user.socialMedia?.linkedin ? '<a href="#" style="color:var(--text-muted);font-size:1.1rem;"><i class="fa-brands fa-linkedin-in"></i></a>' : ''}
+          ${user.socialMedia?.twitter ? '<a href="#" style="color:var(--text-muted);font-size:1.1rem;"><i class="fa-brands fa-x-twitter"></i></a>' : ''}
+        </div>
+      </div>
+    `;
+        const events = (AppState.get('events') || []).filter(e => e.institutionId === user.id);
+        document.getElementById('profileBody').innerHTML = `
+      <div class="section"><div class="section-head">Edit Profile</div>
+        <div class="form-card">
+          <div class="form-row">
+            <div class="form-group"><label>College Name</label><input id="editName" value="${user.collegeName || ''}"></div>
+            <div class="form-group"><label>City</label><input id="editCity" value="${user.city || ''}"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>State</label><input id="editState" value="${user.state || ''}"></div>
+            <div class="form-group"><label>Student Strength</label><input type="number" id="editStrength" value="${user.studentStrength || ''}"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Instagram URL</label><input id="editInsta" value="${user.socialMedia?.instagram || ''}" placeholder="https://instagram.com/..."></div>
+            <div class="form-group"><label>LinkedIn URL</label><input id="editLinkedin" value="${user.socialMedia?.linkedin || ''}" placeholder="https://linkedin.com/..."></div>
+          </div>
+          <button class="btn-primary" id="saveProfile"><i class="fa-solid fa-save"></i> Save Changes</button>
+        </div>
+      </div>
+      <div class="section"><div class="section-head">Past Event Gallery</div>
+        ${events.length > 0 ? '<div class="gallery-grid">' + events.map(e => `<div class="gallery-item" title="${e.eventName}">🎪</div>`).join('') + '</div>' : '<div class="empty-state"><i class="fa-solid fa-images"></i><p>No past events yet. Create your first event!</p></div>'}
+      </div>
+      ${!user.verified ? '<div class="section"><div class="section-head">Get Verified</div><div class="form-card"><p style="font-size:.88rem;color:var(--text-secondary);margin-bottom:14px;">Upload your institution registration document to get the <span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Verified</span> badge.</p><div class="form-group"><label>Upload Document (PDF/Image)</label><input type="file" accept=".pdf,.jpg,.png"></div><button class="btn-secondary" onclick="showToast(\'Document submitted for review!\')"><i class="fa-solid fa-upload"></i> Submit for Verification</button></div></div>' : ''}
+    `;
+        document.getElementById('saveProfile').addEventListener('click', () => {
+            const updated = { ...user, collegeName: document.getElementById('editName').value.trim(), city: document.getElementById('editCity').value.trim(), state: document.getElementById('editState').value.trim(), studentStrength: parseInt(document.getElementById('editStrength').value) || 0, socialMedia: { ...user.socialMedia, instagram: document.getElementById('editInsta').value.trim(), linkedin: document.getElementById('editLinkedin').value.trim() } };
+            Session.login(updated);
+            AppState.update('institutions', user.id, updated);
+            showToast('Profile updated!');
+            setTimeout(() => location.reload(), 500);
+        });
+        initReveal();
+    </script>
+</body>
+
+</html>

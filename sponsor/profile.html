@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsor Profile — Sponsoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <div id="sidebarContainer"></div>
+        <div class="main-content">
+            <div id="topbarContainer"></div>
+            <div class="page-content">
+                <div class="profile-header" id="profileHeader"></div>
+                <div id="profileBody"></div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/shared.js"></script>
+    <script>
+        if (!Session.require('sponsor')) throw '';
+        const user = Session.get();
+        document.getElementById('sidebarContainer').innerHTML = renderSidebar('profile');
+        document.getElementById('topbarContainer').innerHTML = renderTopbar();
+        initSidebarEvents();
+        document.getElementById('profileHeader').innerHTML = `
+      <div class="profile-avatar">${user.companyName?.charAt(0) || 'S'}</div>
+      <div class="profile-info">
+        <h2>${user.companyName}</h2>
+        <div class="profile-meta">
+          <span><i class="fa-solid fa-industry"></i> ${user.industry}</span>
+          <span><i class="fa-solid fa-indian-rupee-sign"></i> ${user.budgetRange}</span>
+          <span><i class="fa-solid fa-user"></i> ${user.contactPerson}</span>
+        </div>
+      </div>`;
+        const interests = (AppState.get('interests') || []).filter(i => i.sponsorId === user.id);
+        document.getElementById('profileBody').innerHTML = `
+      <div class="section"><div class="section-head">Edit Profile</div>
+        <div class="form-card">
+          <div class="form-row">
+            <div class="form-group"><label>Company Name</label><input id="editName" value="${user.companyName || ''}"></div>
+            <div class="form-group"><label>Industry</label><select id="editIndustry"><option ${user.industry === 'Technology' ? 'selected' : ''}>Technology</option><option ${user.industry === 'FMCG / Beverages' ? 'selected' : ''}>FMCG / Beverages</option><option ${user.industry === 'FMCG / Food' ? 'selected' : ''}>FMCG / Food</option><option ${user.industry === 'Finance / Banking' ? 'selected' : ''}>Finance / Banking</option><option ${user.industry === 'EdTech' ? 'selected' : ''}>EdTech</option><option ${user.industry === 'E-commerce' ? 'selected' : ''}>E-commerce</option><option ${user.industry === 'Automobile' ? 'selected' : ''}>Automobile</option><option ${user.industry === 'Fashion / Lifestyle' ? 'selected' : ''}>Fashion / Lifestyle</option><option ${user.industry === 'Other' ? 'selected' : ''}>Other</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Budget Range</label><select id="editBudget"><option ${user.budgetRange === '₹50K – ₹2L' ? 'selected' : ''}>₹50K – ₹2L</option><option ${user.budgetRange === '₹2L – ₹5L' ? 'selected' : ''}>₹2L – ₹5L</option><option ${user.budgetRange === '₹5L – ₹10L' ? 'selected' : ''}>₹5L – ₹10L</option><option ${user.budgetRange === '₹10L – ₹20L' ? 'selected' : ''}>₹10L – ₹20L</option><option ${user.budgetRange === '₹20L+' ? 'selected' : ''}>₹20L+</option></select></div>
+            <div class="form-group"><label>Contact Person</label><input id="editContact" value="${user.contactPerson || ''}"></div>
+          </div>
+          <button class="btn-primary" id="saveProfile"><i class="fa-solid fa-save"></i> Save Changes</button>
+        </div>
+      </div>
+      <div class="section"><div class="section-head">Past Events Sponsored</div>
+        ${(user.pastSponsored || []).length > 0 ? '<div style="display:flex;flex-direction:column;gap:8px;">' + user.pastSponsored.map(p => `<div class="card" style="cursor:default;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:50%;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-check"></i></div><span style="font-weight:600;">${p}</span></div></div>`).join('') + '</div>' : '<div class="empty-state"><i class="fa-solid fa-handshake"></i><p>No past sponsorships yet</p></div>'}
+      </div>
+      <div class="section"><div class="section-head">Target Industries</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          ${(user.targetIndustries || []).map(t => `<span class="badge badge-purple">${t}</span>`).join('') || '<span class="badge badge-orange">No preferences set</span>'}
+        </div>
+      </div>`;
+        document.getElementById('saveProfile').addEventListener('click', () => {
+            const updated = { ...user, companyName: document.getElementById('editName').value.trim(), industry: document.getElementById('editIndustry').value, budgetRange: document.getElementById('editBudget').value, contactPerson: document.getElementById('editContact').value.trim() };
+            Session.login(updated);
+            AppState.update('sponsors', user.id, updated);
+            showToast('Profile updated!');
+            setTimeout(() => location.reload(), 500);
+        });
+    </script>
+</body>
+
+</html>

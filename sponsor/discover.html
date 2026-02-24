@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Events — Sponsoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <div id="sidebarContainer"></div>
+        <div class="main-content">
+            <div id="topbarContainer"></div>
+            <div class="page-content">
+                <h1 class="page-title">Discover Events</h1>
+                <p class="page-subtitle">Find the perfect campus events to sponsor, filtered by your preferences.</p>
+                <div class="discover-layout">
+                    <div class="filter-panel">
+                        <h3><i class="fa-solid fa-filter"></i> Filters</h3>
+                        <div class="filter-section"><label>City</label><select id="filterCity">
+                                <option value="">All Cities</option>
+                                <option>Pune</option>
+                                <option>Chennai</option>
+                                <option>Delhi</option>
+                                <option>Mumbai</option>
+                                <option>Hyderabad</option>
+                                <option>Bangalore</option>
+                                <option>Kolkata</option>
+                            </select></div>
+                        <div class="filter-section"><label>Event Type</label><select id="filterType">
+                                <option value="">All Types</option>
+                                <option>Tech Fest</option>
+                                <option>Cultural Fest</option>
+                                <option>DJ Night</option>
+                                <option>Hackathon</option>
+                                <option>Sports</option>
+                                <option>Workshop</option>
+                            </select></div>
+                        <div class="filter-section"><label>College Tier</label><select id="filterTier">
+                                <option value="">All Tiers</option>
+                                <option>Tier 1</option>
+                                <option>Tier 2</option>
+                                <option>Tier 3</option>
+                            </select></div>
+                        <div class="filter-section"><label>Min Footfall</label><input type="number" id="filterFootfall"
+                                placeholder="e.g. 1000"></div>
+                        <button class="btn-primary" style="width:100%;justify-content:center;"
+                            onclick="applyFilters()"><i class="fa-solid fa-search"></i> Apply Filters</button>
+                        <button class="btn-secondary" style="width:100%;justify-content:center;margin-top:8px;"
+                            onclick="clearFilters()"><i class="fa-solid fa-rotate"></i> Clear</button>
+                    </div>
+                    <div>
+                        <div id="resultsCount" style="font-size:.88rem;color:var(--text-secondary);margin-bottom:14px;">
+                        </div>
+                        <div class="card-grid" id="eventsGrid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/shared.js"></script>
+    <script>
+        if (!Session.require('sponsor')) throw '';
+        const user = Session.get();
+        document.getElementById('sidebarContainer').innerHTML = renderSidebar('discover');
+        document.getElementById('topbarContainer').innerHTML = renderTopbar('Search events by name, college, or type...');
+        initSidebarEvents();
+        const allEvents = (AppState.get('events') || []).filter(e => e.status === 'published');
+        const bookmarks = AppState.get('bookmarks') || [];
+        const institutions = AppState.get('institutions') || [];
+        function isBookmarked(eventId) { return bookmarks.some(b => b.sponsorId === user.id && b.eventId === eventId); }
+        function getInst(instId) { return institutions.find(i => i.id === instId) || {}; }
+        function renderEvents(events) {
+            document.getElementById('resultsCount').textContent = `Showing ${events.length} event${events.length !== 1 ? 's' : ''}`;
+            const grid = document.getElementById('eventsGrid');
+            if (events.length === 0) { grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><i class="fa-solid fa-search"></i><p>No events match your filters</p></div>'; return; }
+            grid.innerHTML = events.map(e => {
+                const inst = getInst(e.institutionId);
+                const saved = isBookmarked(e.id);
+                return `
+        <div class="event-card">
+          <div class="event-card-header">
+            <div><div class="event-card-title">${e.eventName}</div><div class="event-card-org">${inst.collegeName || 'Institution'} · ${e.type}</div></div>
+            <span class="badge badge-green">${e.status}</span>
+          </div>
+          <div class="event-card-meta">
+            <span class="event-meta-tag"><i class="fa-regular fa-calendar"></i> ${formatDate(e.date)}</span>
+            <span class="event-meta-tag"><i class="fa-solid fa-users"></i> ${(e.footfall || 0).toLocaleString()} footfall</span>
+            <span class="event-meta-tag"><i class="fa-solid fa-location-dot"></i> ${e.city}</span>
+            <span class="event-meta-tag"><i class="fa-solid fa-layer-group"></i> ${e.collegeTier || inst.tier || ''}</span>
+          </div>
+          ${e.tiers?.length ? '<div class="event-card-tiers">' + e.tiers.map(t => `<span class="tier-tag">${t.name}: ${t.price}</span>`).join('') + '</div>' : ''}
+          <div class="event-card-footer">
+            <span class="event-card-budget">${e.budgetRange || ''}</span>
+            <div class="event-card-actions">
+              <button class="btn-secondary" style="padding:8px 14px;font-size:.8rem;" onclick="toggleSave('${e.id}','${e.eventName}')"><i class="fa-${saved ? 'solid' : 'regular'} fa-bookmark"></i> ${saved ? 'Saved' : 'Save'}</button>
+              <button class="btn-primary" style="padding:8px 14px;font-size:.8rem;" onclick="expressInterest('${e.id}','${e.eventName}')"><i class="fa-solid fa-handshake"></i> Express Interest</button>
+            </div>
+          </div>
+        </div>`;
+            }).join('');
+        }
+        window.toggleSave = function (eventId, eventName) {
+            let bm = AppState.get('bookmarks') || [];
+            const existing = bm.findIndex(b => b.sponsorId === user.id && b.eventId === eventId);
+            if (existing > -1) { bm.splice(existing, 1); showToast('Removed from saved'); }
+            else { bm.push({ id: genId(), sponsorId: user.id, eventId, savedAt: new Date().toISOString().split('T')[0] }); showToast('Event saved! 🔖'); }
+            AppState.set('bookmarks', bm);
+            applyFilters();
+        };
+        window.expressInterest = function (eventId, eventName) {
+            const existing = (AppState.get('interests') || []).find(i => i.sponsorId === user.id && i.eventId === eventId);
+            if (existing) { showToast('You already expressed interest in this event', 'info'); return; }
+            AppState.push('interests', { id: genId(), sponsorId: user.id, eventId, sponsorName: user.companyName, eventName, status: 'expressed', expressedAt: new Date().toISOString().split('T')[0] });
+            // Increment interest count
+            const evts = AppState.get('events') || [];
+            const evt = evts.find(e => e.id === eventId);
+            if (evt) { evt.interests = (evt.interests || 0) + 1; AppState.set('events', evts); }
+            // Notify institution
+            if (evt) Notifications.add(evt.institutionId, `${user.companyName} expressed interest in ${eventName}!`, 'success');
+            showToast('Interest expressed! The institution has been notified. 🎉');
+            applyFilters();
+        };
+        window.applyFilters = function () {
+            let filtered = [...allEvents];
+            const city = document.getElementById('filterCity').value;
+            const type = document.getElementById('filterType').value;
+            const tier = document.getElementById('filterTier').value;
+            const footfall = parseInt(document.getElementById('filterFootfall').value) || 0;
+            if (city) filtered = filtered.filter(e => e.city === city);
+            if (type) filtered = filtered.filter(e => e.type === type);
+            if (tier) filtered = filtered.filter(e => (e.collegeTier || '').includes(tier));
+            if (footfall) filtered = filtered.filter(e => (e.footfall || 0) >= footfall);
+            renderEvents(filtered);
+        };
+        window.clearFilters = function () {
+            document.getElementById('filterCity').value = '';
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterTier').value = '';
+            document.getElementById('filterFootfall').value = '';
+            renderEvents(allEvents);
+        };
+        renderEvents(allEvents);
+    </script>
+</body>
+
+</html>

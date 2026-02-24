@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Event Report — Sponsoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <div id="sidebarContainer"></div>
+        <div class="main-content">
+            <div id="topbarContainer"></div>
+            <div class="page-content">
+                <h1 class="page-title">Post-Event Report</h1>
+                <p class="page-subtitle">Submit your post-event report with photos, attendance, and social reach proof.
+                </p>
+                <form id="reportForm">
+                    <div class="form-card">
+                        <h3><i class="fa-solid fa-calendar-check" style="color:var(--green);"></i> Select Event</h3>
+                        <div class="form-group"><label>Event</label><select id="eventSelect" required>
+                                <option value="">Choose an event...</option>
+                            </select></div>
+                    </div>
+                    <div class="form-card">
+                        <h3><i class="fa-solid fa-chart-bar" style="color:var(--primary);"></i> Event Metrics</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Actual Attendance Count</label><input type="number"
+                                    id="attendance" placeholder="e.g. 4500" required></div>
+                            <div class="form-group"><label>Social Media Reach</label><input type="text" id="socialReach"
+                                    placeholder="e.g. 50,000 impressions"></div>
+                        </div>
+                        <div class="form-group"><label>Press Coverage Links</label><input type="text" id="pressCoverage"
+                                placeholder="Links to news articles, blog posts..."></div>
+                    </div>
+                    <div class="form-card">
+                        <h3><i class="fa-solid fa-images" style="color:var(--purple);"></i> Event Photos</h3>
+                        <div class="form-group"><label>Upload Photos</label><input type="file" id="photoUpload"
+                                accept="image/*" multiple>
+                            <p class="hint">Upload event photos to showcase to sponsors (max 5)</p>
+                        </div>
+                        <div id="photoPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+                    </div>
+                    <div class="form-card">
+                        <h3><i class="fa-solid fa-pen-fancy" style="color:var(--accent);"></i> Impact Summary</h3>
+                        <div class="form-group"><label>Describe the event impact</label><textarea id="impactSummary"
+                                placeholder="Describe the overall impact, sponsor visibility delivered, audience engagement, key highlights..."
+                                required></textarea></div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit
+                            Report</button>
+                        <a href="/institution/dashboard.html" class="btn-secondary"><i
+                                class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/shared.js"></script>
+    <script>
+        if (!Session.require('institution')) throw '';
+        const user = Session.get();
+        document.getElementById('sidebarContainer').innerHTML = renderSidebar('report');
+        document.getElementById('topbarContainer').innerHTML = renderTopbar();
+        initSidebarEvents();
+        const events = (AppState.get('events') || []).filter(e => e.institutionId === user.id);
+        const sel = document.getElementById('eventSelect');
+        events.forEach(e => { const opt = document.createElement('option'); opt.value = e.id; opt.textContent = `${e.eventName} (${formatDate(e.date)})`; sel.appendChild(opt); });
+        document.getElementById('photoUpload').addEventListener('change', function () {
+            const preview = document.getElementById('photoPreview');
+            preview.innerHTML = '';
+            Array.from(this.files).slice(0, 5).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => { preview.innerHTML += `<div style="width:100px;height:80px;border-radius:8px;overflow:hidden;border:1px solid var(--border);"><img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;"></div>`; };
+                reader.readAsDataURL(file);
+            });
+        });
+        document.getElementById('reportForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const eventId = document.getElementById('eventSelect').value;
+            const event = events.find(ev => ev.id === eventId);
+            const report = { id: genId(), eventId, eventName: event?.eventName || '', institutionId: user.id, attendance: parseInt(document.getElementById('attendance').value) || 0, socialReach: document.getElementById('socialReach').value.trim(), pressCoverage: document.getElementById('pressCoverage').value.trim(), impactSummary: document.getElementById('impactSummary').value.trim(), photos: [], submittedAt: new Date().toISOString().split('T')[0] };
+            AppState.push('reports', report);
+            // Notify sponsors who expressed interest
+            const interests = (AppState.get('interests') || []).filter(i => i.eventId === eventId);
+            interests.forEach(i => { Notifications.add(i.sponsorId, `Post-event report submitted for ${event?.eventName}! Check the ROI dashboard.`); });
+            showToast('Report submitted successfully! Sponsors will be notified. 🎉');
+            setTimeout(() => window.location.href = '/institution/dashboard.html', 800);
+        });
+    </script>
+</body>
+
+</html>

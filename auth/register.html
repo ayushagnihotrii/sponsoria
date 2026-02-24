@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Sponsoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #EFF6FF 0%, #F5F3FF 50%, #FFF7ED 100%);
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 560px;
+        }
+
+        .auth-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            padding: 36px;
+            border: 1px solid var(--border);
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .auth-logo .logo-mark {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--purple));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            font-size: .88rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: .85rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        #instFields,
+        #sponFields {
+            display: none;
+        }
+
+        #instFields.active,
+        #sponFields.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="logo-mark"><i class="fa-solid fa-bolt"></i></div> Sponsoria
+            </div>
+            <p class="auth-subtitle">Create your account and start connecting!</p>
+            <div class="role-toggle" style="margin: 0 auto 24px;">
+                <button class="role-toggle-btn active" data-role="institution"><i class="fa-solid fa-school"></i>
+                    Institution</button>
+                <button class="role-toggle-btn" data-role="sponsor"><i class="fa-solid fa-building"></i>
+                    Sponsor</button>
+            </div>
+            <form id="registerForm">
+                <!-- Institution Fields -->
+                <div id="instFields" class="active">
+                    <div class="form-row">
+                        <div class="form-group"><label>College Name</label><input type="text" id="collegeName"
+                                placeholder="e.g. IIT Mumbai"></div>
+                        <div class="form-group"><label>College Email</label><input type="email" id="collegeEmail"
+                                placeholder="you@college.ac.in">
+                            <p class="hint">Must be .edu or .ac.in domain</p>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>City</label><input type="text" id="instCity"
+                                placeholder="e.g. Mumbai"></div>
+                        <div class="form-group"><label>State</label><input type="text" id="instState"
+                                placeholder="e.g. Maharashtra"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>College Tier</label>
+                            <select id="instTier">
+                                <option value="Tier 1">Tier 1 (IIT/NIT/BITS)</option>
+                                <option value="Tier 2">Tier 2 (State Universities)</option>
+                                <option value="Tier 3">Tier 3 (Private/Others)</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Student Strength</label><input type="number" id="studentStrength"
+                                placeholder="e.g. 5000"></div>
+                    </div>
+                    <div class="form-group"><label>Contact Person Name</label><input type="text" id="instContact"
+                            placeholder="Prof./Student Name"></div>
+                </div>
+                <!-- Sponsor Fields -->
+                <div id="sponFields">
+                    <div class="form-row">
+                        <div class="form-group"><label>Company Name</label><input type="text" id="companyName"
+                                placeholder="e.g. Pepsi India"></div>
+                        <div class="form-group"><label>Company Email</label><input type="email" id="companyEmail"
+                                placeholder="you@company.com"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Industry Type</label>
+                            <select id="industry">
+                                <option value="Technology">Technology</option>
+                                <option value="FMCG / Beverages">FMCG / Beverages</option>
+                                <option value="FMCG / Food">FMCG / Food</option>
+                                <option value="Finance / Banking">Finance / Banking</option>
+                                <option value="EdTech">EdTech</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="Automobile">Automobile</option>
+                                <option value="Fashion / Lifestyle">Fashion / Lifestyle</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Budget Range</label>
+                            <select id="budgetRange">
+                                <option value="₹50K – ₹2L">₹50K – ₹2L</option>
+                                <option value="₹2L – ₹5L">₹2L – ₹5L</option>
+                                <option value="₹5L – ₹10L">₹5L – ₹10L</option>
+                                <option value="₹10L – ₹20L">₹10L – ₹20L</option>
+                                <option value="₹20L+">₹20L+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Contact Person Name</label><input type="text" id="sponContact"
+                            placeholder="Your Name"></div>
+                </div>
+                <!-- Common -->
+                <div class="form-group"><label>Password</label><input type="password" id="password"
+                        placeholder="Create a password (min 6 chars)" required></div>
+                <button type="submit" class="btn-primary" style="width:100%;justify-content:center;"><i
+                        class="fa-solid fa-user-plus"></i> Create Account</button>
+            </form>
+            <div class="auth-footer">Already have an account? <a href="/auth/login.html">Login here</a></div>
+            <div class="auth-footer" style="margin-top:8px;"><a href="/">← Back to Home</a></div>
+        </div>
+    </div>
+    <script src="/js/shared.js"></script>
+    <script>
+        let role = 'institution';
+        document.querySelectorAll('.role-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.role-toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                role = btn.dataset.role;
+                document.getElementById('instFields').classList.toggle('active', role === 'institution');
+                document.getElementById('sponFields').classList.toggle('active', role === 'sponsor');
+            });
+        });
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('password').value;
+            if (pass.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+            let user;
+            if (role === 'institution') {
+                const email = document.getElementById('collegeEmail').value.trim();
+                if (!email.match(/\.(edu|ac\.in)$/i)) { showToast('Please use a .edu or .ac.in email', 'error'); return; }
+                user = { id: genId(), role: 'institution', email, password: pass, collegeName: document.getElementById('collegeName').value.trim(), city: document.getElementById('instCity').value.trim(), state: document.getElementById('instState').value.trim(), tier: document.getElementById('instTier').value, studentStrength: parseInt(document.getElementById('studentStrength').value) || 0, contactPerson: document.getElementById('instContact').value.trim(), verified: false, socialMedia: {}, pastEvents: [] };
+                AppState.push('institutions', user);
+            } else {
+                user = { id: genId(), role: 'sponsor', email: document.getElementById('companyEmail').value.trim(), password: pass, companyName: document.getElementById('companyName').value.trim(), industry: document.getElementById('industry').value, budgetRange: document.getElementById('budgetRange').value, contactPerson: document.getElementById('sponContact').value.trim(), logo: '', pastSponsored: [], targetIndustries: [] };
+                AppState.push('sponsors', user);
+            }
+            Session.login(user);
+            showToast('Account created successfully!');
+            setTimeout(() => { window.location.href = role === 'institution' ? '/institution/profile.html' : '/sponsor/profile.html'; }, 500);
+        });
+        if (Session.isLoggedIn()) window.location.href = Session.role() === 'institution' ? '/institution/dashboard.html' : '/sponsor/dashboard.html';
+    </script>
+</body>
+
+</html>

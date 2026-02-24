@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event — Sponsoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/shared.css">
+    <style>
+        .tier-card {
+            background: var(--bg-page);
+            border: 1.5px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .tier-card .remove-tier {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #FEE2E2;
+            color: var(--red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .perk-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .perk-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            background: var(--green-light);
+            color: var(--green);
+            font-size: .78rem;
+            font-weight: 600;
+        }
+
+        .perk-tag button {
+            background: none;
+            border: none;
+            color: var(--green);
+            cursor: pointer;
+            font-size: .7rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <div id="sidebarContainer"></div>
+        <div class="main-content">
+            <div id="topbarContainer"></div>
+            <div class="page-content">
+                <h1 class="page-title">Edit Event</h1>
+                <p class="page-subtitle">Update your event listing anytime before the event.</p>
+                <div id="formContainer"></div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/shared.js"></script>
+    <script>
+        if (!Session.require('institution')) throw '';
+        const user = Session.get();
+        document.getElementById('sidebarContainer').innerHTML = renderSidebar('');
+        document.getElementById('topbarContainer').innerHTML = renderTopbar();
+        initSidebarEvents();
+        const evtId = new URLSearchParams(window.location.search).get('id');
+        const events = AppState.get('events') || [];
+        const evt = events.find(e => e.id === evtId);
+        if (!evt) { document.getElementById('formContainer').innerHTML = '<div class="empty-state"><i class="fa-solid fa-circle-exclamation"></i><p>Event not found</p></div>'; throw ''; }
+        let tiers = JSON.parse(JSON.stringify(evt.tiers || []));
+        function renderTiers() {
+            document.getElementById('tiersContainer').innerHTML = tiers.map((t, i) => `
+        <div class="tier-card">
+          <button type="button" class="remove-tier" onclick="tiers.splice(${i},1);renderTiers();"><i class="fa-solid fa-xmark"></i></button>
+          <div class="form-row">
+            <div class="form-group"><label>Tier Name</label><input value="${t.name}" onchange="tiers[${i}].name=this.value"></div>
+            <div class="form-group"><label>Price (₹)</label><input value="${t.price}" onchange="tiers[${i}].price=this.value"></div>
+          </div>
+          <div class="form-group"><label>Perks</label>
+            <div style="display:flex;gap:8px;margin-top:6px;"><input id="perkInput${i}" placeholder="Type a perk"><button type="button" class="btn-secondary" style="padding:8px 14px;" onclick="addPerk(${i})">Add</button></div>
+            <div class="perk-list">${t.perks.map((p, pi) => `<span class="perk-tag">${p}<button type="button" onclick="tiers[${i}].perks.splice(${pi},1);renderTiers();">×</button></span>`).join('')}</div>
+          </div>
+        </div>`).join('');
+        }
+        window.addPerk = function (i) { const inp = document.getElementById('perkInput' + i); if (inp.value.trim()) { tiers[i].perks.push(inp.value.trim()); inp.value = ''; renderTiers(); } };
+        document.getElementById('formContainer').innerHTML = `
+      <form id="editForm">
+        <div class="form-card"><h3><i class="fa-solid fa-circle-info" style="color:var(--primary);"></i> Basic Information</h3>
+          <div class="form-row"><div class="form-group"><label>Event Name</label><input id="eventName" value="${evt.eventName}" required></div><div class="form-group"><label>Event Type</label><select id="eventType"><option ${evt.type === 'Tech Fest' ? 'selected' : ''}>Tech Fest</option><option ${evt.type === 'Cultural Fest' ? 'selected' : ''}>Cultural Fest</option><option ${evt.type === 'DJ Night' ? 'selected' : ''}>DJ Night</option><option ${evt.type === 'Hackathon' ? 'selected' : ''}>Hackathon</option><option ${evt.type === 'Sports' ? 'selected' : ''}>Sports</option><option ${evt.type === 'Workshop' ? 'selected' : ''}>Workshop</option><option ${evt.type === 'Competition' ? 'selected' : ''}>Competition</option><option ${evt.type === 'Other' ? 'selected' : ''}>Other</option></select></div></div>
+          <div class="form-row"><div class="form-group"><label>Date</label><input type="date" id="eventDate" value="${evt.date}"></div><div class="form-group"><label>Venue</label><input id="venue" value="${evt.venue}"></div></div>
+          <div class="form-row"><div class="form-group"><label>Expected Footfall</label><input type="number" id="footfall" value="${evt.footfall}"></div><div class="form-group"><label>City</label><input id="city" value="${evt.city}"></div></div>
+          <div class="form-group"><label>Target Audience</label><input id="targetAudience" value="${evt.targetAudience || ''}"></div>
+          <div class="form-group"><label>Description</label><textarea id="description">${evt.description || ''}</textarea></div>
+        </div>
+        <div class="form-card"><h3><i class="fa-solid fa-tags" style="color:var(--purple);"></i> Sponsorship Tiers</h3><div id="tiersContainer"></div><button type="button" class="btn-secondary" onclick="tiers.push({name:'',price:'',perks:[]});renderTiers();"><i class="fa-solid fa-plus"></i> Add Tier</button></div>
+        <div class="btn-group">
+          <button type="submit" class="btn-primary"><i class="fa-solid fa-save"></i> Update Event</button>
+          <button type="button" class="btn-danger" id="deleteBtn"><i class="fa-solid fa-trash"></i> Delete Event</button>
+          <a href="/institution/dashboard.html" class="btn-secondary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        </div>
+      </form>`;
+        renderTiers();
+        document.getElementById('editForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const updated = { ...evt, eventName: document.getElementById('eventName').value.trim(), type: document.getElementById('eventType').value, date: document.getElementById('eventDate').value, venue: document.getElementById('venue').value.trim(), footfall: parseInt(document.getElementById('footfall').value) || 0, city: document.getElementById('city').value.trim(), targetAudience: document.getElementById('targetAudience').value.trim(), description: document.getElementById('description').value.trim(), tiers };
+            AppState.update('events', evtId, updated);
+            showToast('Event updated!');
+            setTimeout(() => window.location.href = '/institution/dashboard.html', 500);
+        });
+        document.getElementById('deleteBtn').addEventListener('click', () => {
+            if (confirm('Delete this event listing?')) {
+                const arr = AppState.get('events').filter(e => e.id !== evtId);
+                AppState.set('events', arr);
+                showToast('Event deleted');
+                setTimeout(() => window.location.href = '/institution/dashboard.html', 500);
+            }
+        });
+    </script>
+</body>
+
+</html>
